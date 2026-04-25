@@ -1,12 +1,25 @@
-.PHONY: install build run-service run-cli clean help
+.PHONY: install install-py install-go build run-service run-cli init-data clean help
+
+# ── 初始化（首次使用，必须先跑这一步）─────────────────
+init-data:
+	@if [ ! -f data/preferences.json ]; then \
+	  cp data/preferences.example.jsonc data/preferences.json; \
+	  echo "✅ 已创建 data/preferences.json"; \
+	  echo "⚠️  请打开 data/preferences.json，删除所有 // 开头的注释行，使其成为合法 JSON"; \
+	else \
+	  echo "⏭  data/preferences.json 已存在，跳过"; \
+	fi
+	@mkdir -p data/chapters
+	@echo "✅ data/chapters/ 目录就绪"
 
 # ── Python AI 服务 ─────────────────────────────────────
 
 install-py:
-	cd ai-service && pip install -r requirements.txt
+	@echo "⚠️  安装前请确保已关闭 VPN / 系统代理，否则 SSL 握手可能失败"
+	pip install -r ai_service/requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 run-service:
-	cd ai-service && uvicorn main:app --host localhost --port 8000 --reload
+	python -m uvicorn ai_service.main:app --host localhost --port 8000 --reload
 
 # ── Go CLI ─────────────────────────────────────────────
 
@@ -14,23 +27,16 @@ install-go:
 	cd cli && go mod tidy
 
 build:
-	cd cli && go build -o novel-skill .
-	@echo "✅ 构建完成：cli/novel-skill"
+	cd cli && go build -o novel-skill.exe .
+	@echo "✅ 构建完成：cli/novel-skill.exe"
 
 run-cli: build
-	./cli/novel-skill
+	./cli/novel-skill.exe
 
 # ── 一键安装全部依赖 ───────────────────────────────────
 
 install: install-py install-go
 	@echo "✅ 全部依赖安装完成"
-
-# ── 初始化项目（首次使用）─────────────────────────────
-
-init:
-	@bash init_project.sh
-	@cp -n config.yaml.example config.yaml || true
-	@echo "⚠️  请编辑 config.yaml，填入你的 Gemini API Key"
 
 # ── 清理构建产物 ───────────────────────────────────────
 
@@ -43,10 +49,13 @@ clean:
 
 help:
 	@echo ""
-	@echo "  make init          首次初始化项目目录"
+	@echo "首次使用："
+	@echo "  make init-data     创建 preferences.json 并确保 data/chapters/ 目录存在（必须先跑）"
 	@echo "  make install       安装 Python + Go 全部依赖"
+	@echo ""
+	@echo "日常使用："
 	@echo "  make run-service   启动 Python AI 服务（端口 8000）"
-	@echo "  make build         编译 Go CLI"
+	@echo "  make build         编译 Go CLI（生成 cli/novel-skill.exe）"
 	@echo "  make run-cli       编译并启动 CLI 交互式 shell"
 	@echo "  make clean         清理构建产物"
 	@echo ""

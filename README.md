@@ -46,17 +46,38 @@ model:
 > 用 gemini 时 `provider: "gemini"`、`base_url` 留空、`embedding_model` 填上即可；
 > 用 OpenAI 兼容服务时 embedding 暂时降级为哈希伪向量，RAG 效果有限但不影响主流程。
 
-**3. 创建项目运行需要的文件夹**
+**3. 初始化运行时文件（首次必做）**
 
-> ⚠️ 这些缺少的文件夹需要手动创建，它们是运行所必需的（例如用于存放生成的小说等文件）。
+> `data/preferences.json` 和 `data/chapters/` 不随仓库分发，首次使用需要手动创建。
 
-**3.1 创建 `preferences.json`**
+**一键完成（推荐）**
 
+```bash
+make init-data
 ```
-将 `preferences.example.jsonc` 文件改名为 `preferences.json`，并删除文件中的所有注释内容。
+
+会自动：复制模板 → 提示你编辑 → 创建 `data/chapters/` 目录。
+
+**或手动操作**
+
+**3.1 创建 `data/preferences.json`**
+
+`data/preferences.json` 已被 `.gitignore` 排除（`accept` 命令每次执行后会覆写它），仓库只保留 `data/preferences.example.jsonc` 作为模板。
+
+```powershell
+# 在项目根目录执行
+copy data\preferences.example.jsonc data\preferences.json
 ```
 
-**3.2 创建 `chapters`文件夹在data中**
+> ⚠️ 复制完成后**必须**打开 `data/preferences.json`，删除所有 `//` 开头的注释行，
+> 使其成为合法的标准 JSON（`json.load` 不接受注释）。
+> 各字段含义参见 `data/preferences.example.jsonc`。
+
+**3.2 创建 `data/chapters/` 目录**
+
+```powershell
+mkdir data\chapters
+```
 
 **4. 安装依赖**
 
