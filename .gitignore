@@ -30,3 +30,21 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# 运行期生成数据（每个用户本地独立，不应进 git）
+# ChromaDB 向量库（章节记忆 + 风格 RAG，由 style-index / 写章节自动生成）
+data/.chroma/
+# 已生成的章节正文
+data/chapters/*.txt
+# 拼接出的完整小说
+data/novel.md
+# 写作偏好运行时文件（accept 会覆写，模板见 preferences.example.jsonc）
+data/preferences.json
+# 草稿目录（current_draft.md 等中间文件）
+draft/

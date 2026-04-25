@@ -1,0 +1,30 @@
+model:
+  provider: "longcat"             # 模型提供方：gemini / longcat / 任意 OpenAI 兼容服务（如 deepseek / kimi / qwen / openai 等）
+  api_key: ""                     # 你自己的 API Key，请到对应平台申请：Gemini→https://aistudio.google.com/apikey ｜ LongCat→https://longcat.chat/platform ｜ DeepSeek→https://platform.deepseek.com/api_keys ｜ Kimi→https://platform.moonshot.cn/console/api-keys ｜ 阿里云百炼(Qwen)→https://bailian.console.aliyun.com/?apiKey=1 ｜ OpenAI→https://platform.openai.com/api-keys
+  model: "LongCat-Flash-Thinking" # 具体模型名，需与 provider 对应。例：gemini-2.5-pro / LongCat-Flash-Thinking / deepseek-reasoner / moonshot-v1-128k / qwen-max / gpt-4o
+  base_url: "https://api.longcat.chat/openai/v1"  # OpenAI 兼容服务的接口地址；provider=gemini 时本字段忽略，其他都填官方 v1 地址
+  embedding_model: ""             # 向量化模型，留空则用 chromadb 自带的 all-MiniLM-L6-v2（够用）；如需更精细可填 text-embedding-3-small 等
+  request_timeout: 600            # AI 请求超时（秒）。thinking/reasoning 类深度模型建议 ≥300，普通模型 120 足够
+
+service:
+  host: "localhost"
+  port: 8000
+
+fanfic:
+  enabled: true                                                # 是否启用同人模式：true=写章节前会用 Serper 联网搜索原著资料注入 prompt；非同人创作请改为 false
+  reference_book: "全职法师"                                     # 你的参考书（原著名）：作为搜索关键词使用，例如"全职法师"/"诡秘之主"/"凡人修仙传"；非同人模式留空字符串 ""
+  serper_api_key: ""                                          # Serper 联网搜索 API Key，免费申请地址：https://serper.dev/ （注册赠送约 2500 次免费查询额度，用完可换号或付费）；fanfic.enabled=false 时本字段不会被读取，可留空
+
+novel:
+  worldview_path: "data/worldview.md"
+  character_path: "data/character.md"
+  outline_path: "data/outline.md"
+  memory_path: "data/memory.md"
+  chapters_dir: "data/chapters"
+  novel_path: "data/novel.md"
+  style_refs_dir: "data/style_refs"
+  draft_path: "draft/current_draft.md"
+  recent_chapters: 3
+  vector_top_k: 5
+  words_per_segment: 2000
+  max_retry_rounds: 3

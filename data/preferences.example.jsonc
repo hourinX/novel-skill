@@ -1,0 +1,24 @@
+// 写作偏好配置示例文件（JSONC 格式，仅作模板说明用）
+//
+// ⚠️ 本文件不会被程序读取，仅用于教学。真正生效的是同目录下的 preferences.json（标准 JSON，不能有注释）。
+// 用法：把下面这些键值按需复制到 preferences.json 里（去掉所有 // 注释行）。
+//
+// 谁在读它：
+//   - generate / regenerate：未传 --words 时使用 chapter_length 作为目标字数
+//   - generate-intro（序言/楔子/简介）：使用 preferred_genre + writing_style 注入 prompt
+//   - status：用于 CLI 显示当前偏好
+//   - accept：每次接收章节后自动刷新 last_updated 字段
+//
+// 谁在写它：
+//   - accept：每次接收时 write_preferences()，会按 json.dump 完整覆写整个文件
+//   - 这意味着你手动写在 preferences.json 里的注释会在下一次 accept 时被抹掉
+//
+// 想要更多偏好项？参考 ai_service/core/preferences.py 的 DEFAULT_PREFERENCES
+{
+  "preferred_genre": "玄幻",                       // 题材类型，会写进序言/楔子 prompt。示例："玄幻" / "都市" / "武侠" / "科幻" / "悬疑" / "言情" / "历史架空" / "末世"
+  "writing_style": "紧张大气",                     // 整体写作风格关键词，建议 4-8 字。示例："紧张大气" / "冷峻克制" / "诗意细腻" / "幽默轻快" / "热血爽快" / "压抑沉重"
+  "chapter_length": 8000,                         // 单章默认字数（generate/regenerate 未传 --words 时使用）。示例：4000（短章奏快） / 8000（标准） / 12000（厚重）
+  "narrative_perspective": "第三人称有限视角",      // 叙事视角。示例："第一人称" / "第三人称有限视角" / "第三人称全知视角" / "多视角切换"
+  "hook_preference": "悬念型",                     // 章节结尾偏好的钩子类型。示例："悬念型" / "命运型" / "情感型" / "反转型" / "危机型"
+  "last_updated": "2026-04-25"                    // 最近一次 accept 的日期（accept 自动维护，手填会被覆盖）。格式："YYYY-MM-DD"
+}
