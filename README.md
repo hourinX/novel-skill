@@ -46,9 +46,17 @@ model:
 > 用 gemini 时 `provider: "gemini"`、`base_url` 留空、`embedding_model` 填上即可；
 > 用 OpenAI 兼容服务时 embedding 暂时降级为哈希伪向量，RAG 效果有限但不影响主流程。
 
-**3. 创建 `preferences.json`**
+**3. 创建项目运行需要的文件夹**
 
+> ⚠️ 这些缺少的文件夹需要手动创建，它们是运行所必需的（例如用于存放生成的小说等文件）。
+
+**3.1 创建 `preferences.json`**
+
+```
 将 `preferences.example.jsonc` 文件改名为 `preferences.json`，并删除文件中的所有注释内容。
+```
+
+**3.2 创建 `chapters`文件夹在data中**
 
 **4. 安装依赖**
 
